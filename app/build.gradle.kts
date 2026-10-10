@@ -14,16 +14,36 @@ android {
         applicationId = "com.diego.dreambud"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        // Overridable via Gradle properties, e.g. -PversionName=1.2.0 -PversionCode=42
+        versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1
+        versionName = (project.findProperty("versionName") as String?) ?: "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("ci") {
+            val keystorePath = System.getenv("DREAMBUD_KEYSTORE_FILE") ?: ""
+            if (keystorePath.isNotEmpty()) {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("DREAMBUD_KEYSTORE_PASSWORD") ?: ""
+                keyAlias = System.getenv("DREAMBUD_KEY_ALIAS") ?: ""
+                keyPassword = System.getenv("DREAMBUD_KEY_PASSWORD") ?: ""
+            }
+        }
     }
 
     buildTypes {
         release {
             optimization {
                 enable = false
+            }
+            // CI release signing when a keystore is provided, debug keystore otherwise
+            // so the APK is always installable.
+            signingConfig = if (!System.getenv("DREAMBUD_KEYSTORE_FILE").isNullOrBlank()) {
+                signingConfigs.getByName("ci")
+            } else {
+                signingConfigs.getByName("debug")
             }
         }
     }
