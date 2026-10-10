@@ -16,6 +16,10 @@ captures/
 # Local configuration (SDK paths, signing) — never commit
 local.properties
 
+# Signing keystores — never commit
+*.jks
+*.keystore
+
 # Kotlin build artifacts
 .kotlin/
 
