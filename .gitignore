@@ -1,0 +1,36 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+gradle-app.setting
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Local configuration (SDK paths, signing) — never commit
+local.properties
+
+# Kotlin build artifacts
+.kotlin/
+
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Crash logs / profiling
+*.log
+hs_err_pid*
+replay_pid*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*~
